@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Player</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="row" style="margin-top: 150px">
+    <div class="col-md-2"></div>
+    <div class="col-md-4">
+        <div style="background-color: #5bc0de"><b>角色信息</b></div>
+        <p>
+        <div class="col-md-3">角色名称</div>
+        <div class="col-md-9">{{ player.nickname }}</div>
+        </p>
+        <p>
+        <div class="col-md-3">攻击力</div>
+        <div class="col-md-9">{{ player.ATC }}</div>
+        </p>
+        <p>
+        <div class="col-md-3">防御力</div>
+        <div class="col-md-9">{{ player.DEF }}</div>
+        </p>
+        <p>
+        <div class="col-md-3">生命值</div>
+        <div class="col-md-9">{{ player.LIFE }}</div>
+        </p>
+        <p>
+        <div class="col-md-12">装备栏</div>
+        <div class="col-md-12" style="background-color: red">
+            {% if not player.Equip %}
+                暂无装备
+            {% endif %}
+            {% for item in player.Equip %}
+                <div class="btn-group">
+                <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                    {{ item.name }} <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li ><a >攻击力&nbsp;{{ item.atc }}</a></li>
+                    <li><a >防御力&nbsp;{{ item.def }}</a></li>
+                    <li><a >生命值&nbsp;{{ item.life }}</a></li>
+                    <li role="separator" class="divider"></li>
+                    <li><a href="/unset_equip/{{ item.name }}/{{ player._id }}">卸下此道具</a></li>
+                </ul>
+            </div>
+            {% endfor %}
+        </div>
+        </p>
+        <p>
+        <div class="col-md-12">道具栏</div>
+        <div class="col-md-12" style="background-color: gray">
+            {% if not player.Package %}
+                空空如也
+            {% endif %}
+            {% for item in player.Package %}
+                <div class="btn-group">
+                <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                    {{ item.name }} <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li ><a >攻击力&nbsp;{{ item.atc }}</a></li>
+                    <li><a >防御力&nbsp;{{ item.def }}</a></li>
+                    <li><a >生命值&nbsp;{{ item.life }}</a></li>
+                    <li role="separator" class="divider"></li>
+                    <li><a href="/set_equip/{{ item.name }}/{{ player._id }}">装备此道具</a></li>
+                </ul>
+            </div>
+            {% endfor %}
+
+        </div>
+        </p>
+
+    </div>
+    <div class="col-md-4">
+        <div style="background-color: darkviolet"><b>敌方列表</b></div>
+        {% for item in killer %}
+            <div class="btn-group">
+                <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                    {{ item.nickname }} <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li ><a >攻击力&nbsp;{{ item.ATC }}</a></li>
+                    <li><a >防御力&nbsp;{{ item.DEF }}</a></li>
+                    <li><a >生命值&nbsp;{{ item.LIFE }}</a></li>
+                    <li role="separator" class="divider"></li>
+                    <li><a href="/skill/{{ item._id }}">弄它!</a></li>
+                </ul>
+            </div>
+        {% endfor %}
+
+    </div>
+    <div class="col-md-2"></div>
+</div>
+</body>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
+</html>

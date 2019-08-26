@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<title>Document</title>
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<link rel="stylesheet" type="text/css" href="css/mui.css"/>
+</head>
+<body>
+	<header class="mui-bar mui-bar-nav">
+		<h1 class="mui-title">首页</h1>
+	</header>
+	<div class="mui-content">
+		<ul class="mui-table-view mui-grid-view mui-grid-9">
+		<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
+			<a href="#">
+				<span class="mui-icon mui-icon-home"></span>
+				<div class="mui-media-body">Home</div>
+			</a>
+		</li>
+		<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
+			<a href="#">
+				<span class="mui-icon mui-icon-email"><span class="mui-badge mui-badge-red">5</span></span>
+				<div class="mui-media-body">Email</div>
+			</a>
+		</li>
+		<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
+			<a href="#">
+				<span class="mui-icon mui-icon-chatbubble"></span>
+				<div class="mui-media-body">Chat</div>
+			</a>
+		</li>
+		<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
+			<a href="#">
+				<span class="mui-icon mui-icon-location"></span>
+				<div class="mui-media-body">Location</div>
+			</a>
+		</li>
+		<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
+			<a href="#">
+				<span class="mui-icon mui-icon-search"></span>
+				<div class="mui-media-body">Search</div>
+			</a>
+		</li>
+		<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
+			<a href="#">
+				<span class="mui-icon mui-icon-phone"></span>
+				<div class="mui-media-body">Phone</div>
+			</a>
+		</li>
+			</ul>
+		<ul class="mui-table-view">
+			<li class="mui-table-view-cell mui-media">
+				<a href="javascript:;">
+					<img class="mui-media-object mui-pull-left" src="">
+					<div class="mui-media-body">
+						幸福
+						<p class="mui-ellipsis">能和心爱的人一起睡觉，是件幸福的事情；可是，打呼噜怎么办？</p>
+					</div>
+				</a>
+			</li>
+			<li class="mui-table-view-cell mui-media">
+				<a href="javascript:;">
+					<img class="mui-media-object mui-pull-left" src="">
+					<div class="mui-media-body">
+						木屋
+						<p class="mui-ellipsis">想要这样一间小木屋，夏天挫冰吃瓜，冬天围炉取暖.</p>
+					</div>
+				</a>
+			</li>
+			<li class="mui-table-view-cell mui-media">
+				<a href="javascript:;">
+					<img class="mui-media-object mui-pull-left" src="">
+					<div class="mui-media-body">
+					    CBD
+						<p class="mui-ellipsis">烤炉模式的城，到黄昏，如同打翻的调色盘一般.</p>
+					</div>
+				</a>
+			</li>
+		</ul>
+		<button type="button" class="mui-btn mui-btn-blue mui-btn-outlined" id="open">摄像头</button>	
+	</div>
+	<nav class="mui-bar mui-bar-tab">
+		<a class="mui-tab-item mui-active">
+			<span class="mui-icon mui-icon-home"></span>
+			<span class="mui-tab-label">首页</span>
+		</a>
+		<a class="mui-tab-item">
+			<span class="mui-icon mui-icon-phone"></span>
+			<span class="mui-tab-label">电话</span>
+		</a>
+		<a class="mui-tab-item">
+			<span class="mui-icon mui-icon-email"></span>
+			<span class="mui-tab-label">邮件</span>
+		</a>
+		<a class="mui-tab-item" id="login">
+			<span class="mui-icon mui-icon-gear"></span>
+			<span class="mui-tab-label" >设置</span>
+			
+		</a>
+	</nav>
+	<script src="js/mui.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		mui.init({
+		  gestureConfig:{
+			   tap: true, //默认为true,单击屏幕
+			   doubletap: true, //默认为false,双击
+			   longtap: true, //默认为false,
+			   swipe: true, //默认为true
+			   drag: true, //默认为true
+			   hold:false,//默认为false，不监听
+			   release:false//默认为false，不监听
+			}
+		});
+		document.getElementById("open").addEventListener("tap",function(){
+			mui.toast('开启摄像头')
+			var cmr = plus.camera.getCamera(1) //1表示开启主摄像头
+			var fbl = cmr.supportedImageResolutions[0] //设置分辨率
+			var gs = cmr.supportedImageFormats[0] //格式
+			cmr.captureImage(
+				function(path){
+					mui.toast(path);
+					},
+				function(err){
+					mui.toast(JSON.stringify(err));
+					},
+					{resolution:fbl,format:gs});	
+		})
+		document.getElementById('login').addEventListener('tap',function () {
+		        mui.toast('login');
+				mui.openWindow({
+						url:'login.html',
+						id:'login'});
+		})
+	</script>
+</body>
+</html>

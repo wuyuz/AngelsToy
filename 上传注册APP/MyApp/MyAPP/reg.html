@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<title>Document</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link rel="stylesheet" type="text/css" href="css/mui.css" />
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<h1 class="mui-title">注册</h1>
+		</header>
+		<div class="mui-content">
+			<form class="mui-input-group">
+				<div class="mui-input-row">
+					<label>用户名</label>
+					<input type="text" id="username" class="mui-input-clear" placeholder="请输入用户名">
+				</div>
+				<div class="mui-input-row">
+					<label>密码</label>
+					<input type="password" id="pwd" class="mui-input-password" placeholder="请输入密码">
+				</div>
+				<div class="mui-input-row">
+					<label>确认密码</label>
+					<input type="password" id="re_pwd" class="mui-input-password" placeholder="再次输入密码">
+				</div>
+				<div class="mui-input-row">
+					<label>用户昵称</label>
+					<input type="text" id='nickname' class="mui-input-clear" placeholder="用户昵称">
+				</div>
+				<div class="mui-input-row">
+					<label>用户头像</label>
+					<button type="button" class="mui-btn mui-btn-outlined" id="xc">上传头像</button>
+					<button type="button" class="mui-btn mui-btn-blue" id='xj'>打开相机</button>
+				</div>
+
+				<div class="mui-button-row">
+					<button type="button" class="mui-btn mui-btn-primary" id='reg_btn'>注册</button>
+					<button type="button" class="mui-btn mui-btn-danger mui-action-back">返回</button>
+				</div>
+			</form>
+			<img id='ttt'>
+		</div>
+		<script src="js/mui.js" type="text/javascript" charset="utf-8"></script>
+		<script src="http://cdn.bootcss.com/blueimp-md5/1.1.0/js/md5.js"></script>
+		<script type="text/javascript">
+			mui.init();
+			var ttt1 = null;
+			document.getElementById('reg_btn').addEventListener('tap', function() {
+				var username = document.getElementById("username").value;
+				var pwd = document.getElementById("pwd").value;
+				var repwd = document.getElementById("re_pwd").value;
+				var nick = document.getElementById("nickname").value;
+				if (pwd != repwd) {
+					mui.toast('两次密码不一致')
+				} else {
+					mui.post('http://192.168.12.42:9527/reg', {
+						username: username,
+						password: md5(pwd),
+						nickname:nick,
+						ttt1 : ttt1
+					}, function(data) {
+						console.log(JSON.stringify(data))
+						if (data.code == 0) {
+							mui.toast(data.msg)
+							mui.back(); // 返回上一页
+						} else {
+							mui.toast('注册失败')
+						}
+					}, 'json');
+				}
+			})
+			document.getElementById('xj').addEventListener('tap', function() {
+				var cmr = plus.camera.getCamera(1);
+				var fbl = cmr.supportedImageResolutions[0]
+				var gs = cmr.supportedImageFormats[0]
+				cmr.captureImage(function(s) {
+						//s 拍照成功之后的保存路径
+						//上传照片,拍了就上传
+						console.log('12')
+						var task = plus.uploader.createUpload("http://192.168.12.42:9527/uploader", {
+								method: "POST",
+							},
+							function(t, status) {
+								// 上传完成
+								console.log(status,t)
+								if (status == 200) {
+									console.log(JSON.stringify(t))
+									var res = JSON.parse(t.responseText)
+									console.log(res)
+									document.getElementById("ttt").src = "http://192.168.12.42:9527/get_avatar/"+res.filename
+									ttt1 = res.filename;
+								} else {
+
+								}
+							}
+						);
+						task.addFile(s,{key:"my_tt"}) //服务端接受的的key是 my_tt
+						task.start();
+					},
+					function(err) {}, {
+						format: gs,
+						resolution: fbl,
+					})
+			})
+
+			document.getElementById('xc').addEventListener('tap', function() {
+				plus.gallery.pick(
+					function(s) {
+						document.getElementById("ttt").src = s
+					},
+					function(err) {}, {}
+				)
+			})
+		</script>
+	</body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<input type="text" id="content"><button onclick="send_msg()">发送消息</button>
+<div id="content_list"></div>
+<script type="application/javascript">
+    var ws = new WebSocket("ws://127.0.0.1:9527/ws");
+    //ws.onmessage属性是一个当收到来自服务器的消息时将调用函数
+    ws.onmessage = function (messageEvent){
+        var my_div = document.getElementById("content_list");
+        var ptag = document.createElement("p");
+        ptag.innerText = messageEvent.data;
+        my_div.appendChild(ptag);
+    };
+    function send_msg() {
+        var msg = document.getElementById("content").value;
+        ws.send(msg);
+    }
+
+
+</script>
+
+</body>
+</html>

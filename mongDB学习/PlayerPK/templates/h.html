@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>查看历史</title>
+</head>
+<body>
+<p>{{ winner }} 胜利了!!!!     <a href="/player">返回角色</a> </p>
+{#<p>{{ h.get("player1") }} 与 {{ h.get("player2") }}的战斗记录</p>#}
+{% for foo in h.get("player_log") %}
+    <p>{{ foo.get("player1")  }}发起攻击 : {{ foo.get("log") }}</p>
+{% endfor %}
+
+    
+</body>
+</html>

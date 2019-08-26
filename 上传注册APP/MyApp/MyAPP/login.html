@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<title>Document</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link rel="stylesheet" type="text/css" href="css/mui.css" />
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">登陆</h1>
+		</header>
+		<div class="mui-content">
+			欢迎来到Login
+			<form class="mui-input-group">
+				<div class="mui-input-row">
+					<label>用户名</label>
+					<input type="text" id='username' class="mui-input-clear" placeholder="请输入用户名">
+				</div>
+				<div class="mui-input-row">
+					<label>密码</label>
+					<input type="password" id='pwd' class="mui-input-password" placeholder="请输入密码">
+				</div>
+
+				<div class="mui-button-row">
+					<button type="button" class="mui-btn mui-btn-primary" id='login'>Login</button>
+					<button type="button" class="mui-btn mui-btn-danger" id='reg'>Register</button>
+				</div>
+			</form>
+		</div>
+
+		<script src="js/mui.js" type="text/javascript" charset="utf-8"></script>
+		<script src="http://cdn.bootcss.com/blueimp-md5/1.1.0/js/md5.js"></script>
+		<script type="text/javascript">
+			mui.init()
+			document.getElementById('reg').addEventListener('tap', function() {
+				mui.openWindow({
+					url: "reg.html",
+					id: 'reg',
+				})
+			});
+			document.getElementById('login').addEventListener('tap', function() {
+				var username = document.getElementById("username").value;
+				var password = document.getElementById("pwd").value;
+				mui.post('http://192.168.12.42:9527/login', {
+					username: username,
+					password: md5(password)
+				}, function(data) {
+					console.log(JSON.stringify(data))
+				}, 'json');
+			});
+		</script>
+	</body>
+</html>
